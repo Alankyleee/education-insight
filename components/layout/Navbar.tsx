@@ -27,6 +27,7 @@ const navLinks = [
   { href: '/resources', label: '资源导航' },
   { href: '/articles', label: '方法教程' },
   { href: '/categories/data-analysis', label: '数据分析' },
+  { href: '/categories/books', label: '书籍资源' },
   { href: '/submit', label: '提交资源' },
 ]
 
