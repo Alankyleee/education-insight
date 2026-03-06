@@ -18,7 +18,7 @@ async function checkUrl(url: string): Promise<boolean> {
 }
 
 export async function POST() {
-  const supabase = createAdminClient()
+  const supabase = await createAdminClient()
   const { data: resources, error } = await (supabase as any)
     .from('resources')
     .select('id, url')
