@@ -34,6 +34,7 @@ export default function SubmitPage() {
     submitter_email: '',
   })
   const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileKey, setTurnstileKey] = useState(0)
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -72,6 +73,9 @@ export default function SubmitPage() {
       setSubmitted(true)
     } catch (err: any) {
       toast.error(err.message || '提交失败，请稍后重试')
+      // Reset Turnstile to get a fresh token for retry
+      setTurnstileToken('')
+      setTurnstileKey((k) => k + 1)
     } finally {
       setLoading(false)
     }
@@ -184,6 +188,7 @@ export default function SubmitPage() {
             <div className="space-y-2">
               <Label>验证码</Label>
               <TurnstileWidget
+                key={turnstileKey}
                 onVerify={setTurnstileToken}
                 onError={() => toast.error('验证码加载失败，请刷新页面')}
               />
