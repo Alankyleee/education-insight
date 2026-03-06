@@ -10,5 +10,8 @@ export async function verifyTurnstile(token: string, ip?: string): Promise<boole
   )
 
   const outcome = await result.json()
+  if (!outcome.success) {
+    console.error('[Turnstile] verification failed:', JSON.stringify(outcome))
+  }
   return outcome.success === true
 }
