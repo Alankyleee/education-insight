@@ -9,7 +9,7 @@ import { getFaviconUrl, truncate } from '@/lib/utils'
 import type { Resource, Category } from '@/lib/supabase/types'
 
 interface ResourceCardProps {
-  resource: Resource & { categories?: Pick<Category, 'name' | 'slug'> | null }
+  resource: Resource & { categories?: Pick<Category, 'name' | 'slug'> | null; is_online?: boolean | null }
 }
 
 export function ResourceCard({ resource }: ResourceCardProps) {
@@ -19,7 +19,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
     <Card className="group flex flex-col h-full hover:shadow-md transition-shadow">
       <CardContent className="flex-1 p-4">
         <div className="flex items-start gap-3">
-          <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden border bg-gray-50 flex items-center justify-center">
+          <div className="relative shrink-0 w-10 h-10 rounded-lg overflow-hidden border bg-gray-50 flex items-center justify-center">
             <Image
               src={resource.thumbnail_url ?? favicon}
               alt={resource.title}
@@ -28,6 +28,12 @@ export function ResourceCard({ resource }: ResourceCardProps) {
               className="object-contain"
               onError={(e) => { (e.target as HTMLImageElement).src = '/images/default-favicon.png' }}
             />
+            {resource.is_online != null && (
+              <span
+                className={`absolute bottom-0.5 right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white ${resource.is_online ? 'bg-green-500' : 'bg-red-400'}`}
+                title={resource.is_online ? '链接可访问' : '链接可能无法访问'}
+              />
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install @tailwindcss/typography highlight.js)",
+      "Bash(npm run build)"
+    ]
+  }
+}

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { formatDate, truncate } from '@/lib/utils'
 import { Plus, Pencil } from 'lucide-react'
 import { DeleteResourceButton } from '@/components/admin/DeleteResourceButton'
+import { CheckResourcesButton } from '@/components/admin/CheckResourcesButton'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: '资源管理 - 后台' }
@@ -21,9 +22,12 @@ export default async function AdminResourcesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold text-gray-900">资源管理</h1>
-        <Button asChild size="sm">
-          <Link href="/admin/resources/new"><Plus className="h-4 w-4 mr-1" />添加资源</Link>
-        </Button>
+        <div className="flex gap-2">
+          <CheckResourcesButton />
+          <Button asChild size="sm">
+            <Link href="/admin/resources/new"><Plus className="h-4 w-4 mr-1" />添加资源</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -33,6 +37,7 @@ export default async function AdminResourcesPage() {
               <th className="pb-3 pr-4">资源名称</th>
               <th className="pb-3 pr-4">分类</th>
               <th className="pb-3 pr-4">状态</th>
+              <th className="pb-3 pr-4">可访问</th>
               <th className="pb-3 pr-4">评分</th>
               <th className="pb-3 pr-4">添加时间</th>
               <th className="pb-3">操作</th>
@@ -54,6 +59,15 @@ export default async function AdminResourcesPage() {
                   <Badge variant={r.is_approved ? 'default' : 'outline'}>
                     {r.is_approved ? '已发布' : '未发布'}
                   </Badge>
+                </td>
+                <td className="py-3 pr-4">
+                  {r.is_online == null ? (
+                    <span className="text-gray-300 text-xs">未检查</span>
+                  ) : r.is_online ? (
+                    <span className="inline-flex items-center gap-1 text-xs text-green-600"><span className="w-2 h-2 rounded-full bg-green-500 inline-block" />正常</span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-xs text-red-500"><span className="w-2 h-2 rounded-full bg-red-400 inline-block" />异常</span>
+                  )}
                 </td>
                 <td className="py-3 pr-4 text-gray-500">
                   {r.rating_count > 0 ? `${Number(r.avg_rating).toFixed(1)} (${r.rating_count})` : '—'}
